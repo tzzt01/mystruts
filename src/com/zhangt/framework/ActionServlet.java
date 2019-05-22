@@ -24,31 +24,31 @@ public class ActionServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			// 1. »ñÈ¡ÇëÇóuri, µÃµ½ÇëÇóÂ·¾¶Ãû³Æ   ¡¾login¡¿
+			// 1. è·å–è¯·æ±‚uri, å¾—åˆ°è¯·æ±‚è·¯å¾„åç§°   ã€loginã€‘
 			String uri = request.getRequestURI();
-			// µÃµ½ login
+			// å¾—åˆ° login
 			String actionName = uri.substring(uri.lastIndexOf("/") + 1, uri.indexOf(".action"));
-			// 2. ¸ù¾İÂ·¾¶Ãû³Æ£¬¶ÁÈ¡ÅäÖÃÎÄ¼ş£¬µÃµ½ÀàµÄÈ«Ãû   ¡¾com.zhangt.LoginAction¡¿
+			// 2. æ ¹æ®è·¯å¾„åç§°ï¼Œè¯»å–é…ç½®æ–‡ä»¶ï¼Œå¾—åˆ°ç±»çš„å…¨åã€com.zhangt.framework.action.LoginActionã€‘
 			ActionMapping actionMapping = actionMappingManager.getActionMapping(actionName);
 			String className = actionMapping.getClassName();
-			// µ±Ç°ÇëÇóµÄ´¦Àí·½·¨   ¡¾method="login"¡¿
+			// å½“å‰è¯·æ±‚çš„å¤„ç†æ–¹æ³•   ã€method="login"ã€‘
 			String method = actionMapping.getMethod();
 			
-			// 3. ·´Éä£º ´´½¨¶ÔÏó£¬µ÷ÓÃ·½·¨£» »ñÈ¡·½·¨·µ»ØµÄ±ê¼Ç
+			// 3. åå°„ï¼š åˆ›å»ºå¯¹è±¡ï¼Œè°ƒç”¨æ–¹æ³•ï¼› è·å–æ–¹æ³•è¿”å›çš„æ ‡è®°
 			Class<?> clazz = Class.forName(className);
 			Object object = clazz.newInstance();// LoginAction loginAction = new LoginAction();
 			Method m = clazz.getDeclaredMethod(method, HttpServletRequest.class, HttpServletResponse.class);
-			// µ÷ÓÃ·½·¨·µ»ØµÄ±ê¼Ç
+			// è°ƒç”¨æ–¹æ³•è¿”å›çš„æ ‡è®°
 			String returnFlag = (String) m.invoke(object, request, response);
 			
-			// 4. ÄÃµ½±ê¼Ç£¬¶ÁÈ¡ÅäÖÃÎÄ¼şµÃµ½±ê¼Ç¶ÔÓ¦µÄÒ³Ãæ ¡¢ Ìø×ªÀàĞÍ
+			// 4. æ‹¿åˆ°æ ‡è®°ï¼Œè¯»å–é…ç½®æ–‡ä»¶å¾—åˆ°æ ‡è®°å¯¹åº”çš„é¡µé¢ ã€ è·³è½¬ç±»å‹
 			Result result = actionMapping.getResults().get(returnFlag);
-			// ÀàĞÍ
+			// ç±»å‹
 			String type = result.getType();
-			// Ò³Ãæ
+			// é¡µé¢
 			String page = result.getPage();
 			
-			// Ìø×ª
+			// è·³è½¬
 			if ("redirect".equals(type)) {
 				response.sendRedirect(request.getContextPath() + page);
 			} else {
