@@ -1,1 +1,2 @@
-# mystruts
+# mystruts自定义框架
+该代码初步实现了Struts的基本功能，目的是理解Struts框架的思想和实现方法。
